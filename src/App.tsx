@@ -31,7 +31,7 @@ import { LogoShowcaseModal } from './components/LogoShowcaseModal';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'map' | 'reminders'>('map');
-  const [activeLogoVariant, setActiveLogoVariant] = useState<LogoVariant>('concentric');
+  const [activeLogoVariant, setActiveLogoVariant] = useState<LogoVariant>('l-radar-core');
   const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
 
   // Core Data

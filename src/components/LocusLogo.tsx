@@ -1,16 +1,15 @@
 /**
  * src/components/LocusLogo.tsx
  *
- * Black Pinstripe Minimalist Logo for LOCUS.
- * Features 3 vector pinstripe concepts crafted with precision line art:
+ * Black Pinstripe Minimalist Logo for LOCUS integrating the letter "L" inside a geofence radar:
  *
- * 1. 'concentric' (Default): Concentric geofence radar rings with precision crosshair ticks
- * 2. 'monogram': Parallel triple-pinstripe ribbon looping into an 'L' and pin drop
- * 3. 'meridian': Precision celestial compass and coordinate locus grid
+ * 1. 'l-radar-core' (Default): Architectural dual-pinstripe "L" centered within concentric geofence radar rings
+ * 2. 'l-radar-sweep': 90-degree radar sector where the letter "L" forms the primary axes with sweeping concentric geofence waves
+ * 3. 'l-radar-reticle': Technical coordinate reticle with an interlaced pinstripe "L" and cardinal radar ticks
  */
 import React from 'react';
 
-export type LogoVariant = 'concentric' | 'monogram' | 'meridian';
+export type LogoVariant = 'l-radar-core' | 'l-radar-sweep' | 'l-radar-reticle';
 
 interface Props {
   variant?: LogoVariant;
@@ -21,7 +20,7 @@ interface Props {
 }
 
 export const LocusLogo: React.FC<Props> = ({
-  variant = 'concentric',
+  variant = 'l-radar-core',
   size = 32,
   className = '',
   withWordmark = false,
@@ -29,8 +28,8 @@ export const LocusLogo: React.FC<Props> = ({
 }) => {
   return (
     <div className={`inline-flex items-center gap-2.5 ${className}`}>
-      {/* Concept 1: Concentric Pinstripe Geofence Radar */}
-      {variant === 'concentric' && (
+      {/* Concept 1: Dual-Pinstripe 'L' inside Concentric Geofence Radar */}
+      {variant === 'l-radar-core' && (
         <svg
           width={size}
           height={size}
@@ -39,84 +38,88 @@ export const LocusLogo: React.FC<Props> = ({
           xmlns="http://www.w3.org/2000/svg"
           className="shrink-0 transition-transform duration-200"
         >
-          {/* Outer hairline ring */}
-          <circle cx="50" cy="50" r="44" stroke="#1C1B1F" strokeWidth="1.2" strokeDasharray="6 3" />
-          
-          {/* Secondary concentric boundary ring */}
-          <circle cx="50" cy="50" r="35" stroke="#1C1B1F" strokeWidth="1.8" />
-          
-          {/* Intermediate pinstripe ring */}
-          <circle cx="50" cy="50" r="26" stroke="#1C1B1F" strokeWidth="1.2" />
+          {/* Outer dashed perimeter geofence ring (Boundary radius 3) */}
+          <circle
+            cx="50"
+            cy="50"
+            r="44"
+            stroke="#1C1B1F"
+            strokeWidth="1.2"
+            strokeDasharray="6 3"
+          />
 
-          {/* Core focal boundary ring */}
-          <circle cx="50" cy="50" r="16" stroke="#1C1B1F" strokeWidth="2.2" />
+          {/* Intermediate geofence ring (Boundary radius 2) */}
+          <circle
+            cx="50"
+            cy="50"
+            r="35"
+            stroke="#1C1B1F"
+            strokeWidth="1.4"
+          />
 
-          {/* Focal Center Locus Point */}
-          <circle cx="50" cy="50" r="4.5" fill="#1C1B1F" />
-          <circle cx="50" cy="50" r="1.5" fill="#FFFFFF" />
+          {/* Inner core geofence ring (Boundary radius 1) */}
+          <circle
+            cx="50"
+            cy="50"
+            r="24"
+            stroke="#1C1B1F"
+            strokeWidth="1.0"
+            strokeDasharray="3 3"
+            opacity="0.8"
+          />
 
-          {/* Pinstripe Crosshair Axis Lines */}
-          <line x1="50" y1="2" x2="50" y2="20" stroke="#1C1B1F" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="50" y1="80" x2="50" y2="98" stroke="#1C1B1F" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="2" y1="50" x2="20" y2="50" stroke="#1C1B1F" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="80" y1="50" x2="98" y2="50" stroke="#1C1B1F" strokeWidth="1.5" strokeLinecap="round" />
+          {/* Cardinal Radar Crosshairs */}
+          <line x1="50" y1="2" x2="50" y2="18" stroke="#1C1B1F" strokeWidth="1.4" strokeLinecap="round" />
+          <line x1="50" y1="82" x2="50" y2="98" stroke="#1C1B1F" strokeWidth="1.4" strokeLinecap="round" />
+          <line x1="2" y1="50" x2="18" y2="50" stroke="#1C1B1F" strokeWidth="1.4" strokeLinecap="round" />
+          <line x1="82" y1="50" x2="98" y2="50" stroke="#1C1B1F" strokeWidth="1.4" strokeLinecap="round" />
 
-          {/* Precision Cardinal Micro Ticks */}
-          <line x1="50" y1="31" x2="50" y2="39" stroke="#1C1B1F" strokeWidth="1.5" />
-          <line x1="50" y1="61" x2="50" y2="69" stroke="#1C1B1F" strokeWidth="1.5" />
-          <line x1="31" y1="50" x2="39" y2="50" stroke="#1C1B1F" strokeWidth="1.5" />
-          <line x1="61" y1="50" x2="69" y2="50" stroke="#1C1B1F" strokeWidth="1.5" />
+          {/* 45-degree Precision Orientation Ticks */}
+          <line x1="21" y1="21" x2="26" y2="26" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="79" y1="21" x2="74" y2="26" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="21" y1="79" x2="26" y2="74" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="79" y1="79" x2="74" y2="74" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
 
-          {/* Diagonal Corner Guides */}
-          <line x1="22" y1="22" x2="27" y2="27" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
-          <line x1="78" y1="22" x2="73" y2="27" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
-          <line x1="22" y1="78" x2="27" y2="73" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
-          <line x1="78" y1="78" x2="73" y2="73" stroke="#1C1B1F" strokeWidth="1.2" strokeLinecap="round" />
-        </svg>
-      )}
-
-      {/* Concept 2: Geometric Triple Pinstripe Pin ("L" + Drop) */}
-      {variant === 'monogram' && (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="shrink-0 transition-transform duration-200"
-        >
-          {/* Outer pinstripe contour */}
+          {/* --- THE LETTER "L" INTEGRATION --- */}
+          {/* Outer track pinstripe of 'L' */}
           <path
-            d="M50 8C33.43 8 20 21.43 20 38C20 58 50 90 50 90C50 90 80 58 80 38C80 21.43 66.57 8 50 8Z"
+            d="M37 26V71H73"
+            stroke="#1C1B1F"
+            strokeWidth="2.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Inner parallel pinstripe of 'L' creating the luxury dual-line look */}
+          <path
+            d="M44 32V64H68"
             stroke="#1C1B1F"
             strokeWidth="1.6"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
-          {/* Middle nested pinstripe contour */}
+          {/* Fine hairline echo track */}
           <path
-            d="M50 16C37.85 16 28 25.85 28 38C28 53 50 78 50 78C50 78 72 53 72 38C72 25.85 62.15 16 50 16Z"
+            d="M31 26V77H76"
             stroke="#1C1B1F"
-            strokeWidth="1.2"
+            strokeWidth="1.0"
             strokeDasharray="4 2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
 
-          {/* Inner core pinstripe contour */}
-          <path
-            d="M50 24C42.27 24 36 30.27 36 38C36 48 50 66 50 66C50 66 64 48 64 38C64 30.27 57.73 24 50 24Z"
-            stroke="#1C1B1F"
-            strokeWidth="2"
-          />
+          {/* Locus Target Center Dot inside the vertex corner */}
+          <circle cx="44" cy="64" r="2.8" fill="#1C1B1F" />
+          <circle cx="44" cy="64" r="1.2" fill="#FFFFFF" />
 
-          {/* Center Target Eyelet */}
-          <circle cx="50" cy="38" r="6" stroke="#1C1B1F" strokeWidth="1.6" />
-          <circle cx="50" cy="38" r="2" fill="#1C1B1F" />
+          {/* Core Radar Origin Point */}
+          <circle cx="50" cy="50" r="1.8" fill="#1C1B1F" />
         </svg>
       )}
 
-      {/* Concept 3: Meridian Coordinate Grid & Compass Locus */}
-      {variant === 'meridian' && (
+      {/* Concept 2: The 90-Degree Radar Arc Sector 'L' */}
+      {variant === 'l-radar-sweep' && (
         <svg
           width={size}
           height={size}
@@ -125,21 +128,130 @@ export const LocusLogo: React.FC<Props> = ({
           xmlns="http://www.w3.org/2000/svg"
           className="shrink-0 transition-transform duration-200"
         >
-          {/* Framed Diamond Perimeter */}
-          <rect x="50" y="8" width="59.4" height="59.4" transform="rotate(45 50 8)" stroke="#1C1B1F" strokeWidth="1.2" />
+          {/* Concentric Geofence Radar Arcs radiating from the L corner (22, 78) */}
+          <path
+            d="M22 22 A56 56 0 0 1 78 78"
+            stroke="#1C1B1F"
+            strokeWidth="1.2"
+            strokeDasharray="6 3"
+          />
+          <path
+            d="M22 36 A42 42 0 0 1 64 78"
+            stroke="#1C1B1F"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M22 50 A28 28 0 0 1 50 78"
+            stroke="#1C1B1F"
+            strokeWidth="1.2"
+          />
+          <path
+            d="M22 64 A14 14 0 0 1 36 78"
+            stroke="#1C1B1F"
+            strokeWidth="1.0"
+            strokeDasharray="2 2"
+          />
 
-          {/* Latitude & Longitude elliptical pinstripes */}
-          <circle cx="50" cy="50" r="38" stroke="#1C1B1F" strokeWidth="1.8" />
-          <ellipse cx="50" cy="50" rx="38" ry="18" stroke="#1C1B1F" strokeWidth="1.2" />
-          <ellipse cx="50" cy="50" rx="18" ry="38" stroke="#1C1B1F" strokeWidth="1.2" />
+          {/* 45-degree Radar Sweep Beam line */}
+          <line
+            x1="22"
+            y1="78"
+            x2="68"
+            y2="32"
+            stroke="#1C1B1F"
+            strokeWidth="1.2"
+            strokeDasharray="4 2"
+          />
+          <circle cx="68" cy="32" r="3.5" stroke="#1C1B1F" strokeWidth="1.2" />
+          <circle cx="68" cy="32" r="1.5" fill="#1C1B1F" />
 
-          {/* Horizontal and Vertical Meridian Pinstripes */}
-          <line x1="12" y1="50" x2="88" y2="50" stroke="#1C1B1F" strokeWidth="1.5" />
-          <line x1="50" y1="12" x2="50" y2="88" stroke="#1C1B1F" strokeWidth="1.5" />
+          {/* --- THE LETTER "L" STRUCTURE --- */}
+          {/* Main Primary Pinstripe Stem & Foot */}
+          <path
+            d="M22 14V78H86"
+            stroke="#1C1B1F"
+            strokeWidth="3.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
 
-          {/* Focal Central Point */}
-          <circle cx="50" cy="50" r="4.5" fill="#1C1B1F" />
+          {/* Parallel Inner Pinstripe of the L */}
+          <path
+            d="M28 20V72H80"
+            stroke="#1C1B1F"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Parallel Outer Hairline Guide */}
+          <path
+            d="M16 14V84H86"
+            stroke="#1C1B1F"
+            strokeWidth="1.0"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Pivot Vertex Eyelet */}
+          <circle cx="22" cy="78" r="5" fill="#1C1B1F" />
+          <circle cx="22" cy="78" r="2" fill="#FFFFFF" />
+        </svg>
+      )}
+
+      {/* Concept 3: Circular Radar Reticle with Interlaced Pinstripe 'L' */}
+      {variant === 'l-radar-reticle' && (
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="shrink-0 transition-transform duration-200"
+        >
+          {/* Outer continuous circular radar casing */}
+          <circle cx="50" cy="50" r="45" stroke="#1C1B1F" strokeWidth="1.8" />
+          
+          {/* Secondary concentric distance ring */}
+          <circle cx="50" cy="50" r="36" stroke="#1C1B1F" strokeWidth="1.0" strokeDasharray="4 2" />
+
+          {/* Inner concentric core ring */}
+          <circle cx="50" cy="50" r="26" stroke="#1C1B1F" strokeWidth="1.4" />
+
+          {/* Innermost micro target ring */}
+          <circle cx="50" cy="50" r="15" stroke="#1C1B1F" strokeWidth="0.9" opacity="0.6" />
+
+          {/* Radar Reticle Crosshair Ticks (North, South, East, West) */}
+          <line x1="50" y1="5" x2="50" y2="15" stroke="#1C1B1F" strokeWidth="1.5" />
+          <line x1="50" y1="85" x2="50" y2="95" stroke="#1C1B1F" strokeWidth="1.5" />
+          <line x1="5" y1="50" x2="15" y2="50" stroke="#1C1B1F" strokeWidth="1.5" />
+          <line x1="85" y1="50" x2="95" y2="50" stroke="#1C1B1F" strokeWidth="1.5" />
+
+          {/* --- THE LETTER "L" EMBEDDED IN RETICLE --- */}
+          {/* Triple-pinstripe stylized modern "L" */}
+          <path
+            d="M38 24V68H72"
+            stroke="#1C1B1F"
+            strokeWidth="3.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M44 28V62H66"
+            stroke="#1C1B1F"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Radar target lock point at intersection */}
+          <circle cx="50" cy="50" r="3.5" fill="#1C1B1F" />
           <circle cx="50" cy="50" r="1.5" fill="#FFFFFF" />
+
+          {/* Diagonal range quadrant marks */}
+          <line x1="28" y1="28" x2="33" y2="33" stroke="#1C1B1F" strokeWidth="1.2" />
+          <line x1="72" y1="28" x2="67" y2="33" stroke="#1C1B1F" strokeWidth="1.2" />
+          <line x1="72" y1="72" x2="67" y2="67" stroke="#1C1B1F" strokeWidth="1.2" />
         </svg>
       )}
 
@@ -149,7 +261,7 @@ export const LocusLogo: React.FC<Props> = ({
             LOCUS
           </span>
           <span className="text-[9px] font-semibold tracking-wider text-gray-400 uppercase mt-0.5">
-            Geofence OS
+            Geofence Radar
           </span>
         </div>
       )}

@@ -26,39 +26,39 @@ interface LogoConcept {
 
 const CONCEPTS: LogoConcept[] = [
   {
-    id: 'concentric',
-    title: 'The Concentric Geofence Radar',
-    tagline: 'Radial boundaries, cardinal crosshairs & focal point',
+    id: 'l-radar-core',
+    title: 'Concept 1: Dual-Pinstripe "L" in Concentric Radar',
+    tagline: 'Precision architectural "L" centered in nested geofence boundaries',
     description:
-      'Nested hairline pinstripe rings evoking radar sweeps and precision geofence boundaries (100m, 200m, 500m). Sliced by micro-gaps with cardinal crosshairs converging on a pinpoint locus.',
+      'Nested geofence boundary rings (dashed perimeter, 250m, 100m) with cardinal crosshairs. A bold dual-track pinstripe letter "L" sits at the core with its corner vertex locking into the central coordinate locus dot.',
     characteristics: [
-      'Ultra-fine 1.2px pinstripes with alternating dashed perimeter',
-      'Orthogonal crosshair axes for cartographic precision',
-      'Centered locus aperture symbolising exact contextual arrival',
+      'Dual-track parallel pinstripe "L" with micro echo-dash outline',
+      'Concentric circular geofence perimeters radiating behind the letter',
+      'Center target locus eyelet embedded at the "L" vertex',
     ],
   },
   {
-    id: 'monogram',
-    title: 'The Triple Pinstripe Pin',
-    tagline: 'Contoured map pin with nested contour tracks',
+    id: 'l-radar-sweep',
+    title: 'Concept 2: 90° Radar Sweep Sector "L"',
+    tagline: 'The letter "L" forms the radar axes with sweeping boundary waves',
     description:
-      'A luxury automotive-inspired triple pinstripe contour that outlines the classic map pin droplet with nested negative space channels and a centered target eyelet.',
+      'The vertical stem and horizontal foot of the letter "L" serve as the primary radar axes. Triple-pinstriped lines anchor the letter while concentric geofence arcs sweep outward at 45° with a target ping.',
     characteristics: [
-      'Triple-track parallel contours with precision corner radii',
-      'Subtle dashed intermediate layer creating depth without shading',
-      'Instantly recognisable location pin silhouette at micro sizes',
+      'Letter "L" seamlessly integrated as the orthogonal radar grid frame',
+      'Sweeping concentric sonar/geofence waves expanding across the quadrant',
+      '45-degree detection beam with terminal coordinate lock target',
     ],
   },
   {
-    id: 'meridian',
-    title: 'The Meridian Coordinate Locus',
-    tagline: 'Orthographic grid, diamond framing & coordinate axes',
+    id: 'l-radar-reticle',
+    title: 'Concept 3: The Radar Reticle "L"',
+    tagline: 'Circular telemetry reticle with an interlaced geometric "L"',
     description:
-      'Diamond-framed latitude and longitude elliptical pinstripes intersecting at the prime coordinate center. Evokes global navigation systems and celestial instruments.',
+      'High-precision 360° circular radar reticle with cardinal calibration ticks. Inside, an architectural geometric letter "L" interlaces across the concentric boundary rings with a central target aperture.',
     characteristics: [
-      '45-degree diamond bezel enclosing spherical meridians',
-      'Dual elliptical pinstripes representing spatial awareness',
-      'Technical instrument aesthetic with high-contrast minimalism',
+      'Circular radar instrument casing with range rings (15m, 26m, 36m, 45m)',
+      'Clean geometric "L" intersecting the concentric boundary lines',
+      'Minimalist black line weight balance optimized for app icons and dark/light UI',
     ],
   },
 ];
