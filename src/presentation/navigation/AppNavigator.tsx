@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, Platform, StyleSheet } from 'react-native';
 import { MapScreen } from '../screens/MapScreen';
 import { RemindersScreen } from '../screens/RemindersScreen';
+import { MapOutlineIcon, RemindersOutlineIcon } from '../components/TabIcons';
 
 export type RootTabParamList = {
   Map: undefined;
@@ -16,10 +17,6 @@ export type RootTabParamList = {
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
-
-const TabIcon = ({ emoji, focused }: { emoji: string; focused: boolean }) => (
-  <Text style={{ fontSize: 20, opacity: focused ? 1 : 0.45 }}>{emoji}</Text>
-);
 
 export const AppNavigator: React.FC = () => (
   <NavigationContainer>
@@ -54,8 +51,9 @@ export const AppNavigator: React.FC = () => (
         tabBarActiveTintColor: '#1C1B1F',
         tabBarInactiveTintColor: '#8E8E93',
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '700',
+          letterSpacing: 0.3,
         },
       }}
     >
@@ -65,17 +63,20 @@ export const AppNavigator: React.FC = () => (
         options={{
           headerShown: false,
           tabBarLabel: 'Map',
-          tabBarIcon: ({ focused }) => <TabIcon emoji="🗺️" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => (
+            <MapOutlineIcon focused={focused} color={color} size={22} />
+          ),
         }}
       />
       <Tab.Screen
         name="Reminders"
         component={RemindersScreen}
         options={{
-          title: 'Reminders',
-          headerShown: true,
+          headerShown: false,
           tabBarLabel: 'Reminders',
-          tabBarIcon: ({ focused }) => <TabIcon emoji="🔔" focused={focused} />,
+          tabBarIcon: ({ focused, color }) => (
+            <RemindersOutlineIcon focused={focused} color={color} size={22} />
+          ),
         }}
       />
     </Tab.Navigator>
