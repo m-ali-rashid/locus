@@ -85,9 +85,29 @@ export const MapWorkspaceScreen: React.FC = () => {
   const [isCommitting, setIsCommitting] = useState<boolean>(false);
 
   // Domain & State Hooks
-  const { geofences, saveGeofence } = useGeofences();
+  const { geofences, saveGeofence, deleteGeofence } = useGeofences();
   const addReminder = useReminderStore((s) => s.addReminder);
   const { location: userLocation } = useUserLocation();
+
+  const handleCommittedMarkerPress = useCallback(
+    (geofence: Geofence) => {
+      Alert.alert(
+        geofence.name,
+        `Radius: ${geofence.radius}m\nCoordinates: ${geofence.latitude.toFixed(4)}°N, ${geofence.longitude.toFixed(4)}°W`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Delete Locus',
+            style: 'destructive',
+            onPress: async () => {
+              await deleteGeofence(geofence.id);
+            },
+          },
+        ],
+      );
+    },
+    [deleteGeofence],
+  );
 
   // Place autocomplete search hook
   const {
@@ -258,6 +278,7 @@ export const MapWorkspaceScreen: React.FC = () => {
             <Marker
               coordinate={{ latitude: g.latitude, longitude: g.longitude }}
               anchor={{ x: 0.5, y: 0.5 }}
+              onPress={() => handleCommittedMarkerPress(g)}
             >
               <View style={styles.committedMarkerWrap}>
                 <View style={styles.committedMarkerDot} />
