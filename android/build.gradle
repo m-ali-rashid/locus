@@ -10,6 +10,8 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        // Required for react-native-background-geolocation
+        maven { url 'https://www.transistorsoft.com/react-native-background-geolocation/extras/repository' }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
