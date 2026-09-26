@@ -82,6 +82,7 @@ export const MapWorkspaceScreen: React.FC = () => {
   const [radius, setRadius] = useState<number>(200);
   const [title, setTitle] = useState<string>('');
   const [transitionType, setTransitionType] = useState<TransitionType>('ENTER');
+  const [alertType, setAlertType] = useState<'notification' | 'alarm'>('notification');
   const [isCommitting, setIsCommitting] = useState<boolean>(false);
 
   // Domain & State Hooks
@@ -225,6 +226,7 @@ export const MapWorkspaceScreen: React.FC = () => {
         longitude: pin.longitude,
         radius,
         transitionType,
+        alertType,
         geofenceId,
         triggerEvent: transitionType,
         status: 'active',
@@ -238,6 +240,7 @@ export const MapWorkspaceScreen: React.FC = () => {
       setPin(null);
       setTitle('');
       setRadius(200);
+      setAlertType('notification');
 
       Alert.alert(
         'Locus Committed',
@@ -416,6 +419,45 @@ export const MapWorkspaceScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
+          {/* Alert Delivery Mode: Standard Notice vs Loud Alarm */}
+          <View style={styles.alertModeRow}>
+            <TouchableOpacity
+              style={[
+                styles.alertModePill,
+                alertType === 'notification' && styles.alertModePillActive,
+              ]}
+              onPress={() => setAlertType('notification')}
+              activeOpacity={0.8}
+            >
+              <Text
+                style={[
+                  styles.alertModeText,
+                  alertType === 'notification' && styles.alertModeTextActive,
+                ]}
+              >
+                🔔 Standard Notice
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.alertModePill,
+                alertType === 'alarm' && styles.alertModeAlarmActive,
+              ]}
+              onPress={() => setAlertType('alarm')}
+              activeOpacity={0.8}
+            >
+              <Text
+                style={[
+                  styles.alertModeText,
+                  alertType === 'alarm' && styles.alertModeAlarmTextActive,
+                ]}
+              >
+                ⏰ Loud Alarm
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           {/* 60fps Tactile Radius Scrubber */}
           <View style={styles.scrubberSection}>
             <TactileRadiusScrubber radius={radius} onChangeRadius={setRadius} />
@@ -423,13 +465,21 @@ export const MapWorkspaceScreen: React.FC = () => {
 
           {/* Commit Button */}
           <TouchableOpacity
-            style={[styles.commitBtn, isCommitting && styles.commitBtnDisabled]}
+            style={[
+              styles.commitBtn,
+              alertType === 'alarm' && styles.commitBtnAlarm,
+              isCommitting && styles.commitBtnDisabled,
+            ]}
             onPress={handleCommitLocus}
             disabled={isCommitting}
             activeOpacity={0.85}
           >
             <Text style={styles.commitBtnText}>
-              {isCommitting ? 'Commiting Locus...' : `Commit Locus (${radius}m)`}
+              {isCommitting
+                ? 'Committing Locus...'
+                : alertType === 'alarm'
+                ? `Commit Alarm Locus (${radius}m)`
+                : `Commit Locus (${radius}m)`}
             </Text>
           </TouchableOpacity>
         </View>
@@ -644,6 +694,41 @@ const styles = StyleSheet.create({
   transitionPillTextActive: {
     color: '#FFFFFF',
   },
+  alertModeRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 14,
+  },
+  alertModePill: {
+    flex: 1,
+    paddingVertical: 9,
+    borderRadius: 10,
+    backgroundColor: '#F1F5F9',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  alertModePillActive: {
+    backgroundColor: '#0F172A',
+    borderColor: '#0F172A',
+  },
+  alertModeAlarmActive: {
+    backgroundColor: '#EA580C',
+    borderColor: '#C2410C',
+  },
+  alertModeText: {
+    color: '#64748B',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  alertModeTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
+  alertModeAlarmTextActive: {
+    color: '#FFFFFF',
+    fontWeight: '800',
+  },
   scrubberSection: {
     marginBottom: 16,
   },
@@ -657,6 +742,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
+  },
+  commitBtnAlarm: {
+    backgroundColor: '#EA580C',
+    shadowColor: '#EA580C',
   },
   commitBtnDisabled: {
     opacity: 0.6,

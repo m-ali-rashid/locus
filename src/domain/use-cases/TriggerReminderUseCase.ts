@@ -37,10 +37,12 @@ export class TriggerReminderUseCase {
     await this.notificationService.displayNotification({
       title: reminder.title,
       body: reminder.body ?? '',
+      alertType: reminder.alertType ?? 'notification',
       data: {
         reminderId: reminder.id,
         geofenceId: reminder.geofenceId,
         event: transition.event,
+        alertType: reminder.alertType ?? 'notification',
       },
     });
 

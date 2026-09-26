@@ -128,10 +128,17 @@ export const RemindersScreen: React.FC<Props> = ({ navigation }) => {
                 {geofence?.name ?? 'Custom Place'}
               </Text>
             </View>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>
-                {EVENT_LABEL[item.triggerEvent] ?? item.triggerEvent}
-              </Text>
+            <View style={styles.badgesContainer}>
+              {item.alertType === 'alarm' && (
+                <View style={styles.alarmBadge}>
+                  <Text style={styles.alarmBadgeText}>⏰ ALARM</Text>
+                </View>
+              )}
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>
+                  {EVENT_LABEL[item.triggerEvent] ?? item.triggerEvent}
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -279,6 +286,24 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     flex: 1,
+  },
+  badgesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  alarmBadge: {
+    backgroundColor: '#FFEDD5',
+    borderColor: '#FB923C',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  alarmBadgeText: {
+    color: '#C2410C',
+    fontSize: 10,
+    fontWeight: '800',
   },
   badge: {
     backgroundColor: '#F4F4F6',

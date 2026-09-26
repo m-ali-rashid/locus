@@ -33,6 +33,8 @@ export interface Reminder {
   readonly createdAt: string;
   /** Optional detailed note or message body */
   readonly body?: string;
+  /** Delivery alert mode: standard notification vs loud persistent alarm */
+  readonly alertType?: 'notification' | 'alarm';
   /** ISO-8601 timestamp of last trigger */
   readonly lastTriggeredAt?: string;
 }

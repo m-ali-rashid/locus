@@ -2,11 +2,8 @@
  * data/adapters/NotifeeAdapter.ts
  *
  * Implements the NotificationService port using @notifee/react-native.
- * This is the ONLY file that imports from Notifee.
- *
- * Step 1 — stub implementation:
- *   checkPermission and requestPermission are fully implemented.
- *   displayNotification is wired up but channel setup will be expanded in Step 2.
+ * Supports standard local push notifications as well as persistent,
+ * loud geofence boundary alarms with custom sound channels and critical alerts.
  */
 import notifee, {
   AndroidImportance,
@@ -19,12 +16,15 @@ import type {
   NotificationPayload,
 } from '../../domain/services/NotificationService';
 
-const CHANNEL_ID = 'locus_reminders';
-const CHANNEL_NAME = 'Reminders';
+const REMINDER_CHANNEL_ID = 'locus_reminders';
+const REMINDER_CHANNEL_NAME = 'Reminders';
+
+const ALARM_CHANNEL_ID = 'locus_alarms';
+const ALARM_CHANNEL_NAME = 'Geofence Alarms';
 
 export class NotifeeAdapter implements NotificationService {
   private static instance: NotifeeAdapter;
-  private channelCreated = false;
+  private channelsCreated = false;
 
   static getInstance(): NotifeeAdapter {
     if (!NotifeeAdapter.instance) {
@@ -43,23 +43,36 @@ export class NotifeeAdapter implements NotificationService {
       sound: true,
       badge: true,
       alert: true,
-      criticalAlert: false,
+      criticalAlert: true,
     });
     return this.mapAuthStatus(settings.authorizationStatus);
   }
 
   async displayNotification(payload: NotificationPayload): Promise<string> {
-    await this.ensureChannel();
+    await this.ensureChannels();
+
+    const isAlarm = payload.alertType === 'alarm';
 
     const id = await notifee.displayNotification({
-      title: payload.title,
+      title: isAlarm ? `⏰ ALARM: ${payload.title}` : payload.title,
       body: payload.body,
       data: payload.data,
+      ios: {
+        sound: 'default',
+        critical: isAlarm,
+        criticalVolume: isAlarm ? 1.0 : undefined,
+        interruptionLevel: isAlarm ? 'timeSensitive' : 'active',
+      },
       android: {
-        channelId: CHANNEL_ID,
+        channelId: isAlarm ? ALARM_CHANNEL_ID : REMINDER_CHANNEL_ID,
         importance: AndroidImportance.HIGH,
-        smallIcon: 'ic_notification',
+        sound: isAlarm ? 'alarm' : 'default',
+        loopSound: isAlarm,
+        vibrationPattern: isAlarm ? [300, 600, 300, 600, 300, 600] : undefined,
         pressAction: { id: 'default' },
+        actions: isAlarm
+          ? [{ title: 'Dismiss Alarm', pressAction: { id: 'dismiss' } }]
+          : undefined,
       },
     });
     return id;
@@ -85,16 +98,31 @@ export class NotifeeAdapter implements NotificationService {
     }
   }
 
-  private async ensureChannel(): Promise<void> {
-    if (this.channelCreated || Platform.OS !== 'android') {
+  private async ensureChannels(): Promise<void> {
+    if (this.channelsCreated || Platform.OS !== 'android') {
       return;
     }
+
+    // 1. Standard Notifications Channel
     await notifee.createChannel({
-      id: CHANNEL_ID,
-      name: CHANNEL_NAME,
+      id: REMINDER_CHANNEL_ID,
+      name: REMINDER_CHANNEL_NAME,
       importance: AndroidImportance.HIGH,
+      sound: 'default',
       vibration: true,
     });
-    this.channelCreated = true;
+
+    // 2. High-Priority Alarm Channel
+    await notifee.createChannel({
+      id: ALARM_CHANNEL_ID,
+      name: ALARM_CHANNEL_NAME,
+      importance: AndroidImportance.HIGH,
+      sound: 'alarm',
+      bypassDnd: true,
+      vibration: true,
+      vibrationPattern: [300, 600, 300, 600, 300, 600],
+    });
+
+    this.channelsCreated = true;
   }
 }
