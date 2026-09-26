@@ -14,6 +14,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   Platform,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import type { PlaceSuggestion } from '../../domain/entities/PlaceSuggestion';
 
@@ -26,6 +28,7 @@ interface Props {
   onClear: () => void;
   onCenterUserLocation?: () => void;
   onMenuPress?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const PlaceSearchBar: React.FC<Props> = ({
@@ -37,9 +40,10 @@ export const PlaceSearchBar: React.FC<Props> = ({
   onClear,
   onCenterUserLocation,
   onMenuPress,
+  style,
 }) => {
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, style]}>
       <View style={styles.row}>
         {/* Menu / Filter button */}
         <TouchableOpacity

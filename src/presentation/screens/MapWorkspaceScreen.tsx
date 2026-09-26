@@ -31,11 +31,14 @@ import MapView, {
 import uuid from 'react-native-uuid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TactileRadiusScrubber } from '../components/TactileRadiusScrubber';
+import { PlaceSearchBar } from '../components/PlaceSearchBar';
 import { useGeofences } from '../hooks/useGeofences';
+import { usePlaceSearch } from '../hooks/usePlaceSearch';
 import { useReminderStore } from '../state/useReminderStore';
 import { useUserLocation } from '../hooks/useUserLocation';
 import type { Reminder, TransitionType } from '../../domain/entities/Reminder';
 import type { Geofence } from '../../domain/entities/Geofence';
+import type { PlaceSuggestion } from '../../domain/entities/PlaceSuggestion';
 
 interface PinCoord {
   latitude: number;
@@ -86,25 +89,73 @@ export const MapWorkspaceScreen: React.FC = () => {
   const addReminder = useReminderStore((s) => s.addReminder);
   const { location: userLocation } = useUserLocation();
 
-  // Long-press to drop drafting pin
-  const handleLongPress = useCallback((e: LongPressEvent) => {
-    Keyboard.dismiss();
-    const coord = e.nativeEvent.coordinate;
-    setPin(coord);
-    mapRef.current?.animateToRegion(
-      {
-        ...coord,
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
-      },
-      400,
-    );
-  }, []);
+  // Place autocomplete search hook
+  const {
+    query,
+    setQuery,
+    suggestions,
+    isSearching,
+    clear: clearSearch,
+  } = usePlaceSearch({
+    proximity: userLocation ? { latitude: userLocation.latitude, longitude: userLocation.longitude } : null,
+  });
 
-  // Tap to dismiss active pin if tapped outside
-  const handleMapPress = useCallback((_e: MapPressEvent) => {
-    Keyboard.dismiss();
-  }, []);
+  const handleSelectSuggestion = useCallback(
+    (suggestion: PlaceSuggestion) => {
+      Keyboard.dismiss();
+      clearSearch();
+
+      const targetCoord = {
+        latitude: suggestion.latitude,
+        longitude: suggestion.longitude,
+      };
+
+      setPin(targetCoord);
+      setTitle(suggestion.name);
+
+      mapRef.current?.animateToRegion(
+        {
+          ...targetCoord,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.015,
+        },
+        600,
+      );
+    },
+    [clearSearch],
+  );
+
+  // Long-press to drop drafting pin
+  const handleLongPress = useCallback(
+    (e: LongPressEvent) => {
+      Keyboard.dismiss();
+      if (suggestions.length > 0) {
+        clearSearch();
+      }
+      const coord = e.nativeEvent.coordinate;
+      setPin(coord);
+      mapRef.current?.animateToRegion(
+        {
+          ...coord,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        },
+        400,
+      );
+    },
+    [suggestions.length, clearSearch],
+  );
+
+  // Tap to dismiss search suggestions or active pin if tapped outside
+  const handleMapPress = useCallback(
+    (_e: MapPressEvent) => {
+      Keyboard.dismiss();
+      if (suggestions.length > 0) {
+        clearSearch();
+      }
+    },
+    [suggestions.length, clearSearch],
+  );
 
   // Center on user location
   const handleCenterUser = useCallback(() => {
@@ -245,22 +296,17 @@ export const MapWorkspaceScreen: React.FC = () => {
         )}
       </MapView>
 
-      {/* Top Floating Blueprint Bar */}
-      <View style={[styles.topHeader, { top: insets.top + 8 }]}>
-        <View style={styles.topBadge}>
-          <View style={styles.blueprintDot} />
-          <Text style={styles.topBrand}>LOCUS WORKSPACE</Text>
-        </View>
-        {userLocation && (
-          <TouchableOpacity
-            style={styles.gpsButton}
-            onPress={handleCenterUser}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.gpsButtonIcon}>🎯</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {/* Floating Place Search Bar with Live Suggestions */}
+      <PlaceSearchBar
+        query={query}
+        onChangeQuery={setQuery}
+        suggestions={suggestions}
+        isSearching={isSearching}
+        onSelectSuggestion={handleSelectSuggestion}
+        onClear={clearSearch}
+        onCenterUserLocation={handleCenterUser}
+        style={{ top: insets.top + 8 }}
+      />
 
       {/* Floating Long-Press Hint (Shown when no pin is placed) */}
       {!pin && (
@@ -375,52 +421,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0B132B',
-  },
-  // Top blueprint header
-  topHeader: {
-    position: 'absolute',
-    left: 16,
-    right: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  topBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: 'rgba(15, 23, 42, 0.92)',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#334155',
-  },
-  blueprintDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#38BDF8',
-  },
-  topBrand: {
-    color: '#F8FAFC',
-    fontSize: 11,
-    fontWeight: '900',
-    letterSpacing: 1.5,
-  },
-  gpsButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(15, 23, 42, 0.92)',
-    borderWidth: 1,
-    borderColor: '#334155',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  gpsButtonIcon: {
-    fontSize: 16,
   },
   // Hint card
   hintCard: {
