@@ -19,12 +19,14 @@ import { SaveGeofenceUseCase } from '../../domain/use-cases/SaveGeofenceUseCase'
 import { DeleteGeofenceUseCase } from '../../domain/use-cases/DeleteGeofenceUseCase';
 import { TriggerReminderUseCase } from '../../domain/use-cases/TriggerReminderUseCase';
 import { PhotonPlaceSearchAdapter } from '../../data/adapters/PhotonPlaceSearchAdapter';
+import { ReactNativeHapticAdapter } from '../../data/adapters/ReactNativeHapticAdapter';
 
 // ─── Adapters (singletons) ────────────────────────────────────────────────────
 const locationService     = BackgroundGeolocationAdapter.getInstance();
 const notificationService = NotifeeAdapter.getInstance();
 const geofenceMonitor     = GeofenceNativeBridge.getInstance();
 const placeSearchService  = PhotonPlaceSearchAdapter.getInstance();
+const hapticGateway       = ReactNativeHapticAdapter.getInstance();
 
 // ─── Repositories (singletons) ───────────────────────────────────────────────
 const geofenceRepository = AsyncStorageGeofenceRepository.getInstance();
@@ -44,6 +46,7 @@ export const services = {
   notificationService,
   geofenceMonitor,
   placeSearchService,
+  hapticGateway,
   // Repositories
   geofenceRepository,
   reminderRepository,

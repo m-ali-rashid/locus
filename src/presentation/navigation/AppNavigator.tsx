@@ -7,7 +7,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, Platform, StyleSheet } from 'react-native';
-import { MapScreen } from '../screens/MapScreen';
+import { MapWorkspaceScreen } from '../screens/MapWorkspaceScreen';
 import { RemindersScreen } from '../screens/RemindersScreen';
 import { MapOutlineIcon, RemindersOutlineIcon } from '../components/TabIcons';
 
@@ -59,7 +59,7 @@ export const AppNavigator: React.FC = () => (
     >
       <Tab.Screen
         name="Map"
-        component={MapScreen}
+        component={MapWorkspaceScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Map',
