@@ -10,6 +10,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BackgroundFetch from 'react-native-background-fetch';
 import { AppNavigator } from './src/presentation/navigation/AppNavigator';
 import { services } from './src/core/di/ServiceLocator';
@@ -70,16 +71,18 @@ const App: React.FC = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" />
-      <AppNavigator />
-      <PermissionModal
-        visible={showModal}
-        permissions={permissions}
-        isRequesting={status === 'requesting'}
-        onRequestPermissions={requestPermissions}
-        onOpenSettings={openSettings}
-        onDismiss={() => setHasDismissedModal(true)}
-      />
+      <SafeAreaProvider>
+        <StatusBar barStyle="dark-content" />
+        <AppNavigator />
+        <PermissionModal
+          visible={showModal}
+          permissions={permissions}
+          isRequesting={status === 'requesting'}
+          onRequestPermissions={requestPermissions}
+          onOpenSettings={openSettings}
+          onDismiss={() => setHasDismissedModal(true)}
+        />
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 };

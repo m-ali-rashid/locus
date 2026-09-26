@@ -16,6 +16,7 @@ import {
 import { useReminderStore } from '../state/useReminderStore';
 import { useGeofences } from '../hooks/useGeofences';
 import { useUserLocation } from '../hooks/useUserLocation';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LocusLogo } from '../components/LocusLogo';
 import type { Reminder } from '../../domain/entities/Reminder';
 import type { Geofence } from '../../domain/entities/Geofence';
@@ -50,6 +51,7 @@ interface Props {
 }
 
 export const RemindersScreen: React.FC<Props> = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const reminders = useReminderStore((s) => s.reminders);
   const updateReminder = useReminderStore((s) => s.updateReminder);
   const removeReminder = useReminderStore((s) => s.removeReminder);
@@ -193,23 +195,7 @@ export const RemindersScreen: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Header with Locus Radar Logo */}
-      <View style={styles.headerBar}>
-        <View style={styles.headerTitleRow}>
-          <View style={styles.logoBadge}>
-            <LocusLogo size={24} />
-          </View>
-          <Text style={styles.headerBrand}>LOCUS</Text>
-          <View style={styles.pillBadge}>
-            <Text style={styles.pillBadgeText}>Reminders</Text>
-          </View>
-        </View>
-        <Text style={styles.headerSubtitle}>
-          Contextual notifications triggered by geographical boundaries
-        </Text>
-      </View>
-
+    <View style={[styles.container, { paddingTop: insets.top + 8 }]}>
       {reminders.length === 0 ? (
         <View style={styles.emptyContainer}>
           <View style={styles.emptyIconCircle}>
@@ -247,52 +233,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
-  },
-  headerBar: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 14,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EBECEF',
-  },
-  headerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  logoBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#EBECEF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerBrand: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: '#1C1B1F',
-    letterSpacing: 2,
-  },
-  pillBadge: {
-    backgroundColor: '#F3E8FF',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 6,
-  },
-  pillBadgeText: {
-    color: '#6B21A8',
-    fontSize: 10,
-    fontWeight: '800',
-    textTransform: 'uppercase',
-  },
-  headerSubtitle: {
-    color: '#71717A',
-    fontSize: 12,
-    marginTop: 4,
   },
   listContent: {
     padding: 16,
