@@ -22,6 +22,7 @@ import {
 import type { Reminder } from '../domain/entities/Reminder';
 import type { Geofence } from '../domain/entities/Geofence';
 import { calculateDistanceMetres, formatDistance } from '../services/geoUtils';
+import { LocusLogo } from './LocusLogo';
 
 interface Props {
   reminders: Reminder[];
@@ -57,7 +58,10 @@ export const RemindersScreen: React.FC<Props> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-gray-200">
           <div>
             <h1 className="text-2xl font-black text-[#1C1B1F] tracking-tight flex items-center gap-2.5">
-              <span>📍 Locus</span>
+              <div className="w-8 h-8 rounded-xl bg-white border border-gray-200 shadow-2xs flex items-center justify-center p-1">
+                <LocusLogo variant="l-radar-core" size={24} />
+              </div>
+              <span className="tracking-[0.12em]">LOCUS</span>
               <span className="text-xs font-bold uppercase tracking-wider bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md">
                 Reminders
               </span>
@@ -79,8 +83,8 @@ export const RemindersScreen: React.FC<Props> = ({
         {/* Empty State */}
         {reminders.length === 0 ? (
           <div className="py-16 flex flex-col items-center justify-center text-center px-4">
-            <div className="w-16 h-16 rounded-3xl bg-white shadow-md border border-gray-100 flex items-center justify-center mb-4 text-3xl">
-              📍
+            <div className="w-16 h-16 rounded-3xl bg-white shadow-md border border-gray-100 flex items-center justify-center mb-4 p-2.5">
+              <LocusLogo variant="l-radar-core" size={44} />
             </div>
             <h2 className="text-lg font-bold text-[#1C1B1F]">No active reminders</h2>
             <p className="text-sm text-gray-500 max-w-sm mt-1 mb-6 leading-relaxed">
