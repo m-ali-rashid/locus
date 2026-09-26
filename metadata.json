@@ -1,0 +1,8 @@
+{
+  "name": "Locus - Contextual Reminders",
+  "description": "Contextual location-based reminders and geofencing with live place search, boundary triggers, and interactive map preview.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
